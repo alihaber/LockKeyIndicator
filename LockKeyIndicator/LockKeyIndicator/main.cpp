@@ -22,17 +22,8 @@ bool trayEnabled = false;
 // Opacity percentage for the window (0-100). Default 50%.
 int opacityPercent = 70;
 NOTIFYICONDATA nid;
-// Keyboard hook and main window handle for triggering on key press
-HHOOK g_hKeyboardHook = NULL;
+// Main window handle
 HWND g_hwndMain = NULL;
-
-typedef HHOOK(WINAPI *SetWindowsHookExW_t)(int, HOOKPROC, HINSTANCE, DWORD);
-typedef LRESULT(WINAPI *CallNextHookEx_t)(HHOOK, int, WPARAM, LPARAM);
-typedef BOOL(WINAPI *UnhookWindowsHookEx_t)(HHOOK);
-
-SetWindowsHookExW_t pSetWindowsHookEx = NULL;
-CallNextHookEx_t pCallNextHookEx = NULL;
-UnhookWindowsHookEx_t pUnhookWindowsHookEx = NULL;
 
 TCHAR szWindowClass[] = _T("LockKeyIndicator");
 TCHAR szTitle[] = _T("Lock Key Indicator");
@@ -249,11 +240,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
         UpdateOpacityMenuChecks(hwnd);
         break;
     }
-        case WM_USER + 100: {
-            // simulate key press trigger: update and show
-            UpdateLockStatus(hwnd);
-            break;
-        }
+
     case WM_APP + 1: {
         // Tray icon right-click menu
         if (LOWORD(lParam) == WM_RBUTTONUP) {
@@ -389,7 +376,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
         }
         case 2: {
             // Help > About (Unicode so Turkish characters display correctly)
-            const wchar_t* aboutText = L"LockKeyIndicator v1.0.0.5\r\n\r\nYazar: Ali HABER\r\nogcizimci@gmail.com\r\n\r\nİnsanların en hayırlısı insanlara faydalı olandır.\r\n\r\n\"Buhari, Megazi, 35\"";
+            const wchar_t* aboutText = L"LockKeyIndicator v1.0.0.6\r\n\r\nYazar: Ali HABER\r\nogcizimci@gmail.com\r\n\r\nİnsanların en hayırlısı insanlara faydalı olandır.\r\n\r\n\"Buhari, Megazi, 35\"";
             MessageBoxW(hwnd, aboutText, L"About", MB_OK | MB_ICONINFORMATION);
             break;
         }
@@ -438,11 +425,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
         if (trayEnabled) {
             RemoveTrayIcon();
         }
-        // Unhook keyboard hook
-        if (g_hKeyboardHook && pUnhookWindowsHookEx) {
-            pUnhookWindowsHookEx(g_hKeyboardHook);
-            g_hKeyboardHook = NULL;
-        }
+
         PostQuitMessage(0);
         break;
     }
@@ -543,32 +526,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     // Update menu check marks to reflect loaded settings
     UpdateOpacityMenuChecks(hwnd);
 
-    // Dynamically load hook API to evade false positive ML heuristics
-    HMODULE hUser32 = LoadLibraryW(L"user32.dll");
-    if (hUser32) {
-        pSetWindowsHookEx = (SetWindowsHookExW_t)GetProcAddress(hUser32, "SetWindowsHookExW");
-        pCallNextHookEx = (CallNextHookEx_t)GetProcAddress(hUser32, "CallNextHookEx");
-        pUnhookWindowsHookEx = (UnhookWindowsHookEx_t)GetProcAddress(hUser32, "UnhookWindowsHookEx");
-    }
-
-    // Install low-level keyboard hook to trigger display on key events
-    if (pSetWindowsHookEx && pCallNextHookEx) {
-        g_hKeyboardHook = pSetWindowsHookEx(WH_KEYBOARD_LL, [](int nCode, WPARAM wParam, LPARAM lParam) -> LRESULT {
-            if (nCode == HC_ACTION) {
-                KBDLLHOOKSTRUCT* k = (KBDLLHOOKSTRUCT*)lParam;
-                // trigger on key up/down of lock keys
-                if (k->vkCode == VK_CAPITAL || k->vkCode == VK_NUMLOCK || k->vkCode == VK_SCROLL) {
-                    if (g_hwndMain) PostMessage(g_hwndMain, WM_USER + 100, 0, 0);
-                }
-            }
-            return pCallNextHookEx(g_hKeyboardHook, nCode, wParam, lParam);
-        }, hInstance, 0);
-    }
-
     ShowWindow(hwnd, nCmdShow);
     UpdateWindow(hwnd);
 
-    SetTimer(hwnd, 1, 200, NULL);
+    // Use a fast 50ms polling timer instead of a global keyboard hook to completely eliminate Antivirus False Positives
+    SetTimer(hwnd, 1, 50, NULL);
 
     // Apply initial opacity
     // Convert percentage (0-100) to alpha (0-255)

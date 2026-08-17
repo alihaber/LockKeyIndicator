@@ -1,5 +1,10 @@
 # Değişim Günlüğü (Changelog)
 
+## [V1.0.0.6] - 2026-08-17
+### Eklenenler/Düzeltilenler
+- Defender Wacatac/Sabsik False Positive uyarısını tamamen ortadan kaldırmak için `SetWindowsHookEx` (Klavye Kancası) mimarisi projeden TAMAMEN çıkartıldı!
+- Bunun yerine `GetKeyState` API'si ile saniyede 20 kez (50ms) çalışan hafif bir Timer (Zamanlayıcı) döngüsü eklendi. Bu sayede program "Keylogger" (tuş kaydedici) olarak algılanmaktan tamamen kurtuldu ve aynı işlevselliği sıfır risk ile sunmaya devam ediyor.
+
 ## [V1.0.0.5] - 2026-08-17
 ### Eklenenler/Düzeltilenler
 - Proje derleyicisine `/utf-8` bayrağı eklenerek, `MessageBoxW` pencerelerinde (Hakkında vb.) meydana gelen Mojibake (karakter bozulması) hatası tamamen giderildi.
