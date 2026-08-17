@@ -13,8 +13,8 @@ if ($LASTEXITCODE -ne 0) {
 Write-Host "`nGitHub üzerinde 'LockKeyIndicator' reposu oluşturuluyor ve kodlar yükleniyor..." -ForegroundColor Cyan
 & $gh repo create LockKeyIndicator --public --description "Caps Lock / NumLock / ScrollLock On-off indicator for Windows" --source=. --push
 
-Write-Host "`nV1.0.0.3 adıyla Release oluşturuluyor ve LockKeyIndicator.exe yükleniyor..." -ForegroundColor Cyan
-& $gh release create v1.0.0.3 ".\LockKeyIndicator.exe" --title "V1.0.0.3" --notes "Yayınlanabilir güncel sürüm"
+Write-Host "`nV1.0.0.4 adıyla Release oluşturuluyor ve LockKeyIndicator.exe yükleniyor..." -ForegroundColor Cyan
+& $gh release create v1.0.0.4 ".\LockKeyIndicator.exe" --title "V1.0.0.4" --notes "Yayınlanabilir güncel sürüm"
 
 Write-Host "`nTüm işlemler başarıyla tamamlandı! Tarayıcınızda açılıyor..." -ForegroundColor Green
 & $gh repo view --web

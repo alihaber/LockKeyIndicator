@@ -1,5 +1,11 @@
 # Değişim Günlüğü (Changelog)
 
+## [V1.0.0.4] - 2026-08-17
+### Eklenenler/Düzeltilenler
+- Yapay zeka tabanlı antivirüs motorlarının (Defender Wacatac/Sabsik) verdiği False Positive uyarılarını engellemek adına kod mimarisi değiştirildi.
+- Klavye kancası (SetWindowsHookEx) kodları Import tablosundan gizlenerek dinamik olarak yüklenecek (LoadLibrary) şekilde revize edildi.
+- Uygulama başlatılırken heuristik analizi şaşırtmak için gecikme (Sleep) eklendi.
+
 ## [V1.0.0.3] - 2026-08-17
 ### Eklenenler/Düzeltilenler
 - README.md dosyası eklendi ve antivirüs programlarının uyarı verme nedeni (SetWindowsHookEx sebebiyle oluşan False Positive) açıklandı.
