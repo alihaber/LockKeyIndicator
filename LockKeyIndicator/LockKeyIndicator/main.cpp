@@ -276,20 +276,20 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
         }
         case 3: {
             // Settings > Windows Start
-            char configPath[MAX_PATH] = {0};
-            GetModuleFileNameA(NULL, configPath, MAX_PATH);
-            char* lastSlash = strrchr(configPath, '\\');
+            wchar_t configPath[MAX_PATH] = {0};
+            GetModuleFileNameW(NULL, configPath, MAX_PATH);
+            wchar_t* lastSlash = wcsrchr(configPath, L'\\');
             if (lastSlash) *(lastSlash + 1) = 0;
-            char msg3[1024];
-            sprintf_s(msg3, sizeof(msg3),
-                "Windows Start (Baslangicta Calistirma)\n\n"
-                "Bu ayar, bilgisayar basladiginda programin otomatik olarak acilip acilmayacagini denetler.\n\n"
-                "Klasor: %s\n\n"
-                "Evet: Baslangicta calistir\n"
-                "Hayir: Baslangicta calistirma\n\n"
-                "Dilerseniz configLockKey.cfg dosyasindan da ayarlayabilirsiniz.",
+            wchar_t msg3[1024];
+            swprintf_s(msg3, sizeof(msg3)/sizeof(wchar_t),
+                L"Windows Start (Başlangıçta Çalıştırma)\n\n"
+                L"Bu ayar, bilgisayar başladığında programın otomatik olarak açılıp açılmayacağını denetler.\n\n"
+                L"Klasör: %s\n\n"
+                L"Evet: Başlangıçta çalıştır\n"
+                L"Hayır: Başlangıçta çalıştırma\n\n"
+                L"Dilerseniz configLockKey.cfg dosyasından da ayarlayabilirsiniz.",
                 configPath);
-            int res = MessageBoxA(hwnd, msg3, "Windows Start", MB_YESNO | MB_ICONQUESTION);
+            int res = MessageBoxW(hwnd, msg3, L"Windows Start", MB_YESNO | MB_ICONQUESTION);
             if (res == IDYES) {
                 SetAutoStart(true);
             } else if (res == IDNO) {
@@ -343,9 +343,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
             SetTimer(hwnd, hideTimerId, runtimeDelaySeconds * 1000, NULL);
 
             // Ask whether to persist this change to config
-            char askMsg[256];
-            sprintf_s(askMsg, sizeof(askMsg), "Apply delay %d seconds and save to config?\n\nYes = save to config\nNo = apply temporarily", newDelay);
-            int res = MessageBoxA(hwnd, askMsg, "Set Delay", MB_YESNO | MB_ICONQUESTION);
+            wchar_t askMsg[256];
+            swprintf_s(askMsg, sizeof(askMsg)/sizeof(wchar_t), L"Gecikmeyi %d saniye olarak uygulayıp ayarları kaydetmek ister misiniz?\n\nEvet = Ayarlara kaydet\nHayır = Yalnızca geçici olarak uygula", newDelay);
+            int res = MessageBoxW(hwnd, askMsg, L"Gecikme Süresini Ayarla", MB_YESNO | MB_ICONQUESTION);
             if (res == IDYES) {
                 delaySeconds = newDelay;
                 SaveSettings();
@@ -355,20 +355,20 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
         }
         case 5: {
             // Settings > Sistem Tepsisi
-            char configPath[MAX_PATH] = {0};
-            GetModuleFileNameA(NULL, configPath, MAX_PATH);
-            char* lastSlash = strrchr(configPath, '\\');
+            wchar_t configPath[MAX_PATH] = {0};
+            GetModuleFileNameW(NULL, configPath, MAX_PATH);
+            wchar_t* lastSlash = wcsrchr(configPath, L'\\');
             if (lastSlash) *(lastSlash + 1) = 0;
-            char msg5[1024];
-            sprintf_s(msg5, sizeof(msg5),
-                "System Tray (Sistem Tepsisi)\n\n"
-                "Bu ayar, programin Windows sag alt kosesindeki sistem tepsisinde bir simge gostermesini denetler.\n\n"
-                "Klasor: %s\n\n"
-                "Evet: Sistem tepsisinde simge goster\n"
-                "Hayir: Sistem tepsisinde simge gosterme\n\n"
-                "Dilerseniz configLockKey.cfg dosyasindan da ayarlayabilirsiniz.",
+            wchar_t msg5[1024];
+            swprintf_s(msg5, sizeof(msg5)/sizeof(wchar_t),
+                L"System Tray (Sistem Tepsisi)\n\n"
+                L"Bu ayar, programın Windows sağ alt köşesindeki sistem tepsisinde bir simge göstermesini denetler.\n\n"
+                L"Klasör: %s\n\n"
+                L"Evet: Sistem tepsisinde simge göster\n"
+                L"Hayır: Sistem tepsisinde simge gösterme\n\n"
+                L"Dilerseniz configLockKey.cfg dosyasından da ayarlayabilirsiniz.",
                 configPath);
-            int res = MessageBoxA(hwnd, msg5, "System Tray", MB_YESNO | MB_ICONQUESTION);
+            int res = MessageBoxW(hwnd, msg5, L"System Tray", MB_YESNO | MB_ICONQUESTION);
             if (res == IDYES) {
                 trayEnabled = true;
                 AddTrayIcon(hwnd);
@@ -381,7 +381,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
         }
         case 2: {
             // Help > About (Unicode so Turkish characters display correctly)
-            const wchar_t* aboutText = L"LockKeyIndicator v1.0\r\n\r\nAuthor: Ali HABER\r\nogcizimci@gmail.com\r\n\r\nThe best of people are those who are most beneficial to people.\r\n\r\n\"Insanlarin en hayirlisi insanlara faydali olandir\"\r\n\r\n\"Buhari, Magazi, 35\"";
+            const wchar_t* aboutText = L"LockKeyIndicator v1.0\r\n\r\nYazar: Ali HABER\r\nogcizimci@gmail.com\r\n\r\nİnsanların en hayırlısı insanlara faydalı olandır.\r\n\r\n\"Buhari, Megazi, 35\"";
             MessageBoxW(hwnd, aboutText, L"About", MB_OK | MB_ICONINFORMATION);
             break;
         }
@@ -399,9 +399,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     }
     case WM_CLOSE: {
         // Ask user whether to exit or run in background
-        int res = MessageBoxA(hwnd,
-            "Program kapansin mi?\n\nYes = Uygulamadan cik\nNo = Arka planda calismaya devam et (Sistem Tepsisi simgesinde calisacak)",
-            "Kapat",
+        int res = MessageBoxW(hwnd,
+            L"Program kapansın mı?\n\nEvet = Uygulamadan çık\nHayır = Arka planda çalışmaya devam et (Sistem Tepsisi simgesinde çalışacak)",
+            L"Kapat",
             MB_YESNO | MB_ICONQUESTION);
         if (res == IDYES) {
             // Remove tray icon (if present) and close
