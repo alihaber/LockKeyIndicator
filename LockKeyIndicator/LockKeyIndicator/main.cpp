@@ -381,7 +381,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
         }
         case 2: {
             // Help > About (Unicode so Turkish characters display correctly)
-            const wchar_t* aboutText = L"LockKeyIndicator v1.0\r\n\r\nYazar: Ali HABER\r\nogcizimci@gmail.com\r\n\r\nİnsanların en hayırlısı insanlara faydalı olandır.\r\n\r\n\"Buhari, Megazi, 35\"";
+            const wchar_t* aboutText = L"LockKeyIndicator v1.0.0.3\r\n\r\nYazar: Ali HABER\r\nogcizimci@gmail.com\r\n\r\nİnsanların en hayırlısı insanlara faydalı olandır.\r\n\r\n\"Buhari, Megazi, 35\"";
             MessageBoxW(hwnd, aboutText, L"About", MB_OK | MB_ICONINFORMATION);
             break;
         }
