@@ -1,5 +1,9 @@
 # Değişim Günlüğü (Changelog)
 
+## [V1.0.0.7] - 2026-08-17
+### Eklenenler/Düzeltilenler
+- Defender ML motorunun son inatçı uyarılarını (Wacatac) da atlatabilmek için, programın derlenme biçimi "Statik" (/MT) modelinden "Dinamik" (/MD) DLL bağlantılı modele geçirildi. Bu sayede dosya boyutu çok daha ufak oldu ve antivirüsleri şüphelendiren gömülü kütüphane imzalarından tamamen arındırıldı.
+
 ## [V1.0.0.6] - 2026-08-17
 ### Eklenenler/Düzeltilenler
 - Defender Wacatac/Sabsik False Positive uyarısını tamamen ortadan kaldırmak için `SetWindowsHookEx` (Klavye Kancası) mimarisi projeden TAMAMEN çıkartıldı!
