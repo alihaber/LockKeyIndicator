@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="LockKeyIndicator/LockKeyIndicator.vcxproj" Id="fa1bcf24-557e-4fff-9ae6-975b5eae0823" />
+</Solution>

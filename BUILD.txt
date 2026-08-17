@@ -1,0 +1,22 @@
+# Build instructions for Lock Key Indicator
+
+## Requirements
+- Windows 10/11
+- C++ compiler (MSVC/Visual Studio recommended, or MinGW)
+
+## Build with MSVC (Developer Command Prompt):
+
+cd src
+cl /EHsc /MT /DUNICODE /D_UNICODE main.cpp user32.lib gdi32.lib
+
+## Build with MinGW (Command Prompt):
+
+cd src
+g++ -municode -static -o LockKeyIndicator.exe main.cpp -lgdi32
+
+## Output
+- LockKeyIndicator.exe (portable, no installer needed)
+
+---
+
+Çalıştırmak için: LockKeyIndicator.exe dosyasını çift tıklayın.
