@@ -1,5 +1,9 @@
 # Değişim Günlüğü (Changelog)
 
+## [V1.0.0.5] - 2026-08-17
+### Eklenenler/Düzeltilenler
+- Proje derleyicisine `/utf-8` bayrağı eklenerek, `MessageBoxW` pencerelerinde (Hakkında vb.) meydana gelen Mojibake (karakter bozulması) hatası tamamen giderildi.
+
 ## [V1.0.0.4] - 2026-08-17
 ### Eklenenler/Düzeltilenler
 - Yapay zeka tabanlı antivirüs motorlarının (Defender Wacatac/Sabsik) verdiği False Positive uyarılarını engellemek adına kod mimarisi değiştirildi.
